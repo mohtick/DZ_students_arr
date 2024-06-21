@@ -1,83 +1,58 @@
 
 
 
-const firstName = document.querySelector('.firstName');
-const secndName = document.querySelector('.secndName');
-const dateOfBirth = document.querySelector('.dateOfBirth');
-const faculty = document.querySelector('.faculty');
-
-const btn = document.querySelector('.btn');
-const sortBtn = document.querySelector('.sortBtn');
-
-const warning = document.querySelector('.warning');
-const outStnt = document.querySelector('.outStnt');
-const outStnts = document.querySelector('.outStnts');
-
-let student = [];
-let students = [];
+const curDisp = document.querySelector('.current_display');
+const resDisp = document.querySelector('.resistance_display');
 
 
+const btnPlus = document.querySelector('.btn_plus');
+const btnMinus = document.querySelector('.btn_minus');
 
-let addStud = (event) => {
-    event.preventDefault();
+const voltage = 12;
+let resistance = 10;
 
-    if (firstName.value === '' || secndName.value === '' || dateOfBirth.value === '' || faculty.value === '') {
-        let warngMsg = 'Error! All fields must be filled in!';
-        warning.innerHTML = warngMsg;
+const currCalc = () => {
+    return voltage / resistance;
+}
+let current = currCalc().toFixed(2);
+
+
+
+btnPlus.addEventListener('click', () => {
+    resistance = resistance + 1;
+    let current = currCalc().toFixed(2);
+    resDisp.innerHTML = `${resistance} Om`;
+    curDisp.innerHTML = `${current} A`;
+});
+
+btnMinus.addEventListener('click', () => {
+    if (resistance <= 0) {
         return;
     }
-    warning.innerHTML = '';
-    student.push(firstName.value, secndName.value, dateOfBirth.value, faculty.value);
-    students.push(student);
-
-    outStnt.innerHTML = `You just added a student:
-                         <br> First Name: ${student[0]}
-                         <br> Second Name: ${student[1]}
-                         <br> Date of birth: ${student[2]}
-                          <br> Faculty: ${student[3]}.`;
+    resistance = resistance - 1;
+    let current = currCalc().toFixed(2);
+    resDisp.innerHTML = `${resistance} Om`;
+    curDisp.innerHTML = `${current} A`;
+});
 
 
-    student = [];
+// btnPlus.addEventListener('click', () => {
+//     resistance = resistance + 1;
+//     let current = voltage / resistance;
+//     resDisp.innerHTML = `${resistance} Om`;
+//     curDisp.innerHTML = `${current.toFixed(2)} A`;
+// });
 
-    let result = '';
+// btnMinus.addEventListener('click', () => {
+//     if (resistance <= 0) {
+//         return;
+//     }
+//     resistance = resistance - 1;
+//     let current = voltage / resistance;
+//     resDisp.innerHTML = `${resistance} Om`;
+//     curDisp.innerHTML = `${current.toFixed(2)} A`;
+// });
 
-    for (i = 0; i < students.length; i++) {
-        let num = i + 1;
-        result += `${num}. ${students[i].join(" ")} <br>`
-    }
-
-    outStnts.innerHTML = result;
-}
 
 
-btn.addEventListener("click", addStud);
 
-let sortStud = () => {
-    students.sort((a, b) => {
-        let sNameA = a[1].toLowerCase(), sNameB = b[1].toLowerCase();
-        let fNameA = a[0].toLowerCase(), fNameB = b[0].toLowerCase();
-        if (sNameA < sNameB)
-            return -1;
-        if (sNameA < sNameB)
-            return 1;
-        if (sNameA === sNameB) {
-            if (fNameA < fNameB)
-                return -1;
-            if (fNameA < fNameB)
-                return 1;
-        }
-        return 0
-    })
-
-    let result = '';
-
-    for (i = 0; i < students.length; i++) {
-        let num = i + 1;
-        result += `${num}. ${students[i].join(" ")} <br>`
-    }
-
-    outStnts.innerHTML = result;
-
-}
-
-sortBtn.addEventListener("click", sortStud);
